@@ -1,7 +1,10 @@
 <template><div>
     
   <setup v-if="!$root.configured" v-bind:key_token="$root.settings.key_token"></setup>
-  <container-list v-else></container-list>
+  <div v-else>
+      <a class="ui button" href="#/tokens">API Nøgler</a>
+      <container-list></container-list>
+  </div>
   </div>
 </template>
 

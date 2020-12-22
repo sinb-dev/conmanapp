@@ -4,8 +4,10 @@ Vue.config.productionTip = false
 //import HelloWorld from './components/HelloWorld.vue'
 import NotFound from './components/NotFound.vue'
 import LandingPage from './components/LandingPage.vue'
+import TokenPage from './components/TokenPage.vue'
 const routes = {
-  '^$' : LandingPage
+  '^$' : LandingPage,
+  '/tokens' : TokenPage,
 }
 var app = new Vue({
   data : {
