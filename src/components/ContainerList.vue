@@ -1,6 +1,6 @@
 <template>
 <div>
-    <h1>Container!</h1>
+    <h1>My containers</h1>
     <div class="ui middle aligned divided list">
         <div class="item" v-for="container in containers" v-bind:key="container.port">
             <div class="right floated content">
@@ -14,6 +14,7 @@
             </div>
         </div>
     </div>
+    <a class="ui button" href="#/container/request">Request new container</a>
 </div>
 </template>
 
@@ -28,7 +29,7 @@ export default {
         loadContainers(json) {
             this.containers = json;
         },
-        startContainer(name) {
+        startContainer() {
             
         }
     },
