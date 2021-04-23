@@ -15,14 +15,17 @@ namespace Conman.Controllers
         }
 
         [HttpPost("{requestToken}")]
-        public async Task<IActionResult> ReservePort(string requestToken, [FromForm] Reservation requestReservation)
+        public async Task<IActionResult> ReservePort(string requestToken, [FromBody] Reservation requestReservation)
         {
-            if (!_context.ValidateAdminToken(requestToken)) return Unauthorized();
+            if (!_context.ValidateUserToken(requestToken)) return Unauthorized();
+            Random rand = new Random();
+            Reservation existing = null;
+            int handbrake = 0;
+            while (handbrake == 0 || existing != null && handbrake < 1000) {
+                ushort unreserved = (ushort) rand.Next(1024,ushort.MaxValue);
 
-            var existing = _context.GetReservation(requestReservation.Port);
-            if (existing != null)
-            {
-                return Problem("Port is already reserved");
+                existing = _context.GetReservation((ushort) unreserved);
+                handbrake++;
             }
 
             //Validate the requested reservation

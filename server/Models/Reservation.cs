@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Conman.Models {
     public class Reservation {
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public short Port {get;set;}
+        public ushort Port {get;set;}
         public DateTime Reserved {get;set;}
         public Token ReservedFor {get;set;}
         public Token ApprovedBy {get;set;}

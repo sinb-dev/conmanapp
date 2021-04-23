@@ -20,7 +20,7 @@ var app = new Vue({
     verified : false,
     settings : {
       key_token : {tokenId: ""},
-      remote_host : "https://10.0.0.155:5001/",
+      remote_host : "https://10.0.0.155:5000/",
     },
     storage : {},
     dat : "meh",
@@ -44,10 +44,13 @@ var app = new Vue({
       if (json_string) {
         let json_object = JSON.parse(json_string);
         if (json_object) {
-          console.log("Loaded");
+          
+          
           this.settings = json_object.settings;
           this.storage = json_object.storage;
           if (this.storage == undefined) this.storage = {}
+          if (typeof this.settings.key_token != "object")
+            this.settings.key_token = { tokenId: "" };
           console.log("main " + this.tokenId());
         }
       }
@@ -62,11 +65,14 @@ var app = new Vue({
         tokenId: this.tokenId()
       })
       .then(function (response) {
-        self.verified = response.data == "verified";
+        self.verified = parseInt(response.data);
       })
       .catch(function () {
-        self.verified = true;
+        self.verified = 1;
       });
+    },
+    configured() {
+      return this.tokenId() != "" && this.tokenId() != undefined
     },
     tokenId() {
       return this.settings.key_token.tokenId;
@@ -94,11 +100,7 @@ var app = new Vue({
     }
   },
   computed : {
-    configured() {
-      console.log("Key token: "+this.tokenId());
-      return this.tokenId() != ""
-        && this.settings.class
-    },
+    
     ViewComponent() {
       for (var k in routes) {
         var regex = new RegExp(k);
@@ -110,7 +112,7 @@ var app = new Vue({
     }
   },
   render(c) {
-    if (this.ViewComponent != NotFound && this.ViewComponent.requireSetup && !this.configured) {
+    if (this.ViewComponent != NotFound && this.ViewComponent.requireSetup && !this.configured()) {
       
       return c(LandingPage);
     }

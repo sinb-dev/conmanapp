@@ -2,33 +2,27 @@
   <div>
     <h2 class="ui header">Request new container</h2>
     <form class="ui form" id="requestContainerPage_frmRequestContainer">
-      
-        <!--<div class="field">
-            <label>Name</label>
-            <input type="text" name="ReservedFor" v-model="name" placeholder="Name">
-        </div>-->
       <div class="fields">
         <div class="ten wide field">
           <label>Docker image</label>
           <div class="ui input">
-            <input type="text" name="image" v-model="image" placeholder="Enter docker image">
+            <input type="text" name="image" v-model="form.image" placeholder="Enter docker image (e.g. sinb-dev/possum)">
           </div>
         </div>
         <div class="three wide field">
           <label>Container port</label>
           <div class="ui input">
-            <input type="text" name="containerPort" placeholder="Port inside container">
+            <input type="number" name="containerPort" v-model="form.port" placeholder="Port inside container">
           </div>
         </div>
       </div>
       <div class="field">
           <label>Additional parameters</label>
-          <input type="text" name="parameters" placeholder="Docker parameters">
+          <input type="text" name="form.parameters" placeholder="Docker parameters">
       </div>
-      <input type="text" name="reservedFor" v-bind:value="$root.settings.key_token.tokenId">
+      <input type="hidden" v-model="form.reservedFor">
       </form><br>
       <button class="ui button" type="submit" @click="sendRequest">Request</button>
-    
   </div>
 </template>
 
@@ -38,13 +32,21 @@ const axios = require("axios");
 export default {
   data() {
       return {
-        image : ''
+        form : {
+          image : '',
+          port : 0,
+          parameters : '',
+          reservedFor : this.$root.settings.key_token.tokenId
+        }
       }
   },
   methods : {
     toJson() {
       return {
         image : this.image,
+        port : this.port,
+        parameters : this.parameters,
+        reservedFor : this.reservedFor
       }
     },
     saveForm() {
@@ -56,30 +58,17 @@ export default {
       if (!this.$root.storage.reservationForm)
         return false;
       
-      this.image = this.$root.storage.reservationForm.image;
-
+      this.form = this.$root.storage.reservationForm;
     },
     sendRequest() {
       this.saveForm(); //Save information inside this form. Helps if device is not connected
-      let self = this;
+      //let self = this;
       let endpoint = this.$root.settings.remote_host
-        + "token/request"
-      this.$root.settings.username = this.name;
-      this.$root.settings.classname = this.className;
-      
-      axios.post(endpoint, {
-        owner: this.name,
-        class: this.className,
-      })
-      .then(function (response) {
-        if (self.$root.configured == false) {
-          var tokenId = response.data.tokenId;
-          self.$root.settings.key_token = tokenId;
-          console.log("Received token id: "+tokenId);
-          self.$root.save();
-          document.location.href="#";
-        }
+        + "reservation/" + this.$root.settings.key_token.tokenId
 
+      axios.post(endpoint, this.$root.storage.reservationForm)
+      .then(function (response) {
+        console.log("Request container: " + response.data)
       })
       .catch(function (error) {
         console.log(error);
@@ -88,8 +77,12 @@ export default {
       }
     },
     mounted() {
+      if (this.$root.verified < 1) {
+        //redirect
+        document.location.href="#"
+      }
       this.loadForm();
-    },
+    }
     
 }
 </script>

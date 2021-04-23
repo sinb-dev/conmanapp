@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace test.Migrations
+namespace server.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialUpgrade : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,8 +26,7 @@ namespace test.Migrations
                 name: "Containers",
                 columns: table => new
                 {
-                    Port = table.Column<short>(type: "smallint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Port = table.Column<int>(type: "int", nullable: false),
                     TokenId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -49,10 +48,13 @@ namespace test.Migrations
                 name: "Reservations",
                 columns: table => new
                 {
-                    Port = table.Column<short>(type: "smallint", nullable: false),
+                    Port = table.Column<int>(type: "int", nullable: false),
                     Reserved = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReservedForTokenId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ApprovedByTokenId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ApprovedByTokenId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContainerPort = table.Column<short>(type: "smallint", nullable: false),
+                    Parameters = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

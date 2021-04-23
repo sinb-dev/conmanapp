@@ -26,10 +26,7 @@ namespace Conman.Controllers
         [HttpPost("verify")]
         public async Task<IActionResult> Verify([FromBody]Token token)
         {
-            if (!_context.ValidateUserToken(token.TokenId)) 
-                return Ok("invalid");
-            else 
-                return Ok("verified");
+            return Ok(_context.GetTokenType(token.TokenId));
             
         }
 
@@ -104,6 +101,12 @@ namespace Conman.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("removed");
+        }
+
+        [HttpGet("version")]
+        public async Task<ActionResult<Token>> Version()
+        {
+            return Ok("0.0.1");
         }
     }
 }

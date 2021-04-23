@@ -1,14 +1,20 @@
 <template>
 <div>
     <h1>Setup</h1>
-    <div v-if="key_token == ''">
+    <div v-if="key == ''">
     A token is required to work with containers
     </div>
-    <div v-else-if="!$root.verified">
+    <div v-else-if="$root.verified == -1">
     Your token is invalid. Enter a valid token or request a new token
     </div>
+    <div v-else-if="$root.verified == 0">
+    Your token is awaiting approval
+    </div>
+    <div v-else>
+    This is a valid token
+    </div>
     <div class="ui left icon input">
-        <input type="text" v-model="key" placeholder="Your API key" />
+        <input type="text" v-model="key" @change="changed" placeholder="Your API key" />
         <i class="key icon"></i>
     </div>&nbsp;
     <div class="ui buttons">
@@ -32,12 +38,15 @@ export default {
             this.$root.save();
         },
         requestKey() {
-            document.location.hash="#request"
+            document.location.hash="#token/request"
+        },
+        changed() {
+            this.saveSetup();
         }
     },
     mounted() {
-        this.key = this.key_token;
-        console.log("setup " + this.key_token);
+        this.key = this.$root.tokenId();
+        console.log("setup " + this.key);
     }
 }
 </script>

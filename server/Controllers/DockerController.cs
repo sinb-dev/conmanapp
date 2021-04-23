@@ -23,7 +23,6 @@ namespace Conman.Controllers
                 return Ok(containers.ToList());
             }
         }
-        
 
         [HttpGet("{token}/direct")]
         public async Task<IActionResult> GetDirect(string token)

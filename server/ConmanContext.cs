@@ -24,11 +24,21 @@ namespace Conman
 
             return result.Count > 0;
         }
-        
-        public bool ValidateUserToken(string token) 
+        public int GetTokenType(string token) 
         {
             var result = Tokens
                 .Where(b => b.TokenId == token ).ToList();
+
+            if (result.Count == 0) return -1;
+
+            result[0].LastUse = DateTime.Now;
+            SaveChanges();
+            return result[0].Type;
+        }
+        public bool ValidateUserToken(string token) 
+        {
+            var result = Tokens
+                .Where(b => b.TokenId == token && b.Type >= 1 ).ToList();
 
             if (result.Count == 0) return false;
 
@@ -58,7 +68,7 @@ namespace Conman
             var result = Tokens.Where( x => x.TokenId == tokenId ).ToList();
             return result.Count > 0 ? result[0] : null;
         }
-        public Reservation GetReservation(short port)
+        public Reservation GetReservation(ushort port)
         {
             using (var context = new ConmanContext()) {
                 var result = context.Reservations.Where( x => x.Port == port).ToList();

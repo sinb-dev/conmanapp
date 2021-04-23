@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vuSyTvra6GFijHiq6yZBHr6LvJ3IW7IYYxnxZv43dk4vwnFEkrDh8X1JyhbaF3gfsrArLFmYniC34oIQ68W4/Q==",
+  "dgSpecHash": "Mrzlf1i6CTdTvlXJ5uWUXWKQDKzrMteAEk5/gD84NhDXmVOLF9cIdpaIawFYzeG0Zw0Skd6RFdFZyfDkqcnTjw==",
   "success": true,
-  "projectFilePath": "/home/hoxer/test/test.csproj",
+  "projectFilePath": "/home/hoxer/Dokumenter/GitHub/conmanapp/server/server.csproj",
   "expectedPackageFiles": [
     "/home/hoxer/.nuget/packages/bouncycastle.netcore/1.8.3/bouncycastle.netcore.1.8.3.nupkg.sha512",
     "/home/hoxer/.nuget/packages/docker.dotnet/3.125.4/docker.dotnet.3.125.4.nupkg.sha512",
@@ -147,7 +147,8 @@
     "/home/hoxer/.nuget/packages/system.xml.xmlserializer/4.3.0/system.xml.xmlserializer.4.3.0.nupkg.sha512",
     "/home/hoxer/.nuget/packages/system.xml.xpath/4.0.1/system.xml.xpath.4.0.1.nupkg.sha512",
     "/home/hoxer/.nuget/packages/system.xml.xpath.xmldocument/4.0.1/system.xml.xpath.xmldocument.4.0.1.nupkg.sha512",
-    "/home/hoxer/.nuget/packages/techcool/1.1.0/techcool.1.1.0.nupkg.sha512"
+    "/home/hoxer/.nuget/packages/techcool/1.1.0/techcool.1.1.0.nupkg.sha512",
+    "/home/hoxer/.nuget/packages/microsoft.netcore.app.host.linux-x64/3.1.12/microsoft.netcore.app.host.linux-x64.3.1.12.nupkg.sha512"
   ],
   "logs": []
 }

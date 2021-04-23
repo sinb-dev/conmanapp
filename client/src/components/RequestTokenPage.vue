@@ -1,24 +1,25 @@
 <template>
   <div>
-    <h2 class="ui header"> Request new token</h2>
-    <div v-if="$root.configured && $root.verified">
-      You already have an api key
-      <a class="ui button" href="#"></a>
+    <h2 class="ui header"> Request new access token</h2>
+    <div v-if="$root.configured() && $root.verified >= 1">
+      You already have an api key<br>
+      <a class="ui button" href="#">Go back</a>
+      <a class="ui red button" @click="reset()">Reset</a>
     </div>
-    <div v-else-if="$root.configured && !$root.verified">
-      Requested new token
+    <div v-else-if="$root.configured() && $root.verified == 0">
+      Requested new token, waiting for approval
     </div>
     <div v-else>
       <form class="ui form" id="requestTokenPage_frmRequestToken">
         <div class="field">
-            <label>Name</label>
-            <input type="text" name="name" v-model="name" placeholder="Name">
+            <label>Your name</label>
+            <input type="text" name="name" v-model="name" placeholder="Your name">
         </div>
         <div class="field">
-            <label>Class</label>
+            <label>Your class</label>
             <input type="text" name="class" v-model="className" placeholder="Class" data-validate="minLength[4]">
         </div>
-      </form>
+      </form><br>
       <button class="ui button" type="submit" @click="sendRequest">Send request</button>
     </div>
   </div>
@@ -48,18 +49,16 @@ export default {
       let self = this;
       let endpoint = this.$root.settings.remote_host
         + "token/request"
-      this.$root.settings.username = this.name;
-      this.$root.settings.classname = this.className;
       
       axios.post(endpoint, {
         owner: this.name,
         class: this.className,
       })
       .then(function (response) {
-        if (self.$root.configured == false) {
+        console.log("New token id: " + response.data.tokenId);
+        if (self.$root.configured() == false) {
           var tokenId = response.data.tokenId;
-          self.$root.settings.key_token = tokenId;
-          console.log("Received token id: "+tokenId);
+          self.$root.settings.key_token.tokenId = tokenId;
           self.$root.save();
           document.location.href="#";
         }
@@ -69,10 +68,14 @@ export default {
         console.log(error);
       });
       
+    },
+    reset() {
+      this.$root.settings.key_token.tokenId = "";
+      this.$root.save();
     }
   },
   mounted() {
-    if (this.$root.configured && !this.$root.verified) {
+    if (this.$root.configured() && !this.$root.verified) {
       this.sendRequest()
     }
   }

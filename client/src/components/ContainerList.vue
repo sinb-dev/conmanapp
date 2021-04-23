@@ -1,7 +1,11 @@
 <template>
 <div>
     <h1>My containers</h1>
-    <div class="ui middle aligned divided list">
+    <div v-if="containers == null">
+        Loading containers...
+    </div>
+    <div v-else-if="containers.length == 0">No running containers</div>
+    <div v-else class="ui middle aligned divided list">
         <div class="item" v-for="container in containers" v-bind:key="container.port">
             <div class="right floated content">
                 <button class="ui icon button large green" v-if="container.state != 'running'"><i class="play icon"></i></button>
@@ -19,10 +23,11 @@
 </template>
 
 <script>
+const axios = require("axios");
 export default {
     data() {
         return {
-            containers : []
+            containers : null
         }
     },
     methods : {
@@ -34,7 +39,7 @@ export default {
         }
     },
     mounted() {
-        this.loadContainers([{
+        /*this.loadContainers([{
             image : "sinbdev/possum",
             port : 10000,
             name : "possum",
@@ -44,13 +49,16 @@ export default {
             port : 3000,
             name : "openssh",
             state : "running"
-        }]);
-        /*axios.get('/path/to/my/request', { params: { id: id }})
+        }]);*/
+        let self = this;
+        let endpoint = this.$root.settings.remote_host
+        + "docker/"+ this.$root.settings.key_token.tokenId
+        axios.get(endpoint)
         .then(response => {
-            console.log(response)
+            self.loadContainers(response.data);
         }).catch(error => {
-            console.log(response)
-        })*/
+            console.log(error)
+        })
     }
 }
 </script>

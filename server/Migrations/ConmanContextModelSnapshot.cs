@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace test.Migrations
+namespace server.Migrations
 {
     [DbContext(typeof(ConmanContext))]
     partial class ConmanContextModelSnapshot : ModelSnapshot
@@ -21,10 +21,10 @@ namespace test.Migrations
 
             modelBuilder.Entity("Conman.Models.Container", b =>
                 {
-                    b.Property<short>("Port")
+                    b.Property<int>("Port")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint")
-                        .UseIdentityColumn();
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
 
                     b.Property<string>("Command")
                         .HasColumnType("nvarchar(max)");
@@ -50,8 +50,8 @@ namespace test.Migrations
 
             modelBuilder.Entity("Conman.Models.Reservation", b =>
                 {
-                    b.Property<short>("Port")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Port")
+                        .HasColumnType("int");
 
                     b.Property<string>("ApprovedByTokenId")
                         .HasColumnType("nvarchar(450)");
